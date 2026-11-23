@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrapeDiary | Your Personal Wardrobe</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">Drape<span>Diary.</span></div>
+        <div class="tagline">YOUR PERSONAL WARDROBE</div>
+
+        <div class="nav-label">MENU</div>
+
+        <a href="#" class="nav-item active" onclick="showSection('dashboard',this)">⌂ <span>Dashboard</span></a>
+        <a href="#" class="nav-item" onclick="showSection('closet',this)">♧ <span>My Closet</span></a>
+        <a href="#" class="nav-item" onclick="showSection('studio',this)">✧ <span>Outfit Studio</span></a>
+        <a href="#" class="nav-item" onclick="showSection('weather',this)">☁ <span>Weather Style</span></a>
+        <a href="#" class="nav-item" onclick="showSection('favorites',this)">♡ <span>Favorites</span></a>
+
+        <div class="nav-label">YOUR ROUTINE</div>
+
+        <a href="#" class="nav-item" onclick="showSection('tracker',this)">◷ <span>Wear Tracker</span></a>
+        <a href="#" class="nav-item" onclick="showSection('planner',this)">▦ <span>Weekly Planner</span></a>
+        <a href="#" class="nav-item" onclick="showSection('laundry',this)">♧ <span>Laundry</span></a>
+
+        <div class="sidebar-bottom">
+            ✦ A little style inspiration
+            <p>Wear what makes you feel like yourself.</p>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <p>YOUR PERSONAL STYLE SPACE</p>
+            </div>
+            <div class="profile">D</div>
+        </header>
+
+        <!-- DASHBOARD -->
+        <section class="section active" id="dashboard">
+
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="hero-tag">A NEW DAY, A NEW OUTFIT</div>
+                    <h1>Dress like<br>yourself.</h1>
+                    <p>Make the most of what you own.<br>Find combinations you haven't tried yet.</p>
+                    <button class="btn" onclick="showSection('studio')">Discover an outfit ↗</button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">CLOSET ITEMS</div>
+                    <div class="stat-number" id="totalItems">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">TOTAL WEARS</div>
+                    <div class="stat-number" id="totalWears">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">FAVORITES</div>
+                    <div class="stat-number" id="totalFavorites">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">IN LAUNDRY</div>
+                    <div class="stat-number" id="laundryCount">0</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Your closet, lately</h2>
+                <button class="btn btn-light btn-small" onclick="showSection('closet')">View all →</button>
+            </div>
+
+            <div class="closet-grid" id="recentGrid"></div>
+        </section>
+
+        <!-- CLOSET -->
+        <section class="section" id="closet">
+
+            <h1 class="heading">My Closet</h1>
+            <p class="subheading">Everything you own, all in one place.</p>
+
+            <div class="closet-tools">
+                <input class="search" id="searchInput" placeholder="Search your wardrobe..." oninput="renderCloset()">
+                <button class="btn btn-small" onclick="openModal()">+ Add Item</button>
+            </div>
+
+            <div class="filters">
+                <button class="filter active" onclick="setFilter('All',this)">All</button>
+                <button class="filter" onclick="setFilter('Top',this)">Tops</button>
+                <button class="filter" onclick="setFilter('Bottom',this)">Bottoms</button>
+                <button class="filter" onclick="setFilter('Outerwear',this)">Outerwear</button>
+                <button class="filter" onclick="setFilter('Footwear',this)">Footwear</button>
+                <button class="filter" onclick="setFilter('Accessory',this)">Accessories</button>
+            </div>
+
+            <div class="closet-grid" id="closetGrid"></div>
+        </section>
+
+        <!-- OUTFIT STUDIO -->
+        <section class="section" id="studio">
+
+            <h1 class="heading">Outfit Studio</h1>
+            <p class="subheading">Let your wardrobe do the work.</p>
+
+            <div class="panel">
+                <h3>Create your look</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Occasion</label>
+                        <select id="occasion">
+                            <option>Everyday</option>
+                            <option>College</option>
+                            <option>Casual</option>
+                            <option>Formal</option>
+                            <option>Party</option>
+                            <option>Travel</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weather</label>
+                        <select id="weatherSelect">
+                            <option value="warm">Warm</option>
+                            <option value="cold">Cold</option>
+                            <option value="rainy">Rainy</option>
+                            <option value="mild">Mild</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="generateOutfit()">✧ Generate Outfit</button>
+                <div id="outfitResult" class="outfit-result"></div>
+            </div>
+        </section>
+
+        <!-- WEATHER -->
+        <section class="section" id="weather">
+
+            <h1 class="heading">Weather & Style</h1>
+            <p class="subheading">Dress comfortably for the day ahead.</p>
+
+            <div class="weather-box">
+                <div class="weather-temp" id="weatherIcon">☀️</div>
+                <h2 id="weatherTitle">Warm & sunny</h2>
+                <p class="weather-description">Choose a condition to get suitable outfit ideas.</p>
+            </div>
+
+            <div class="panel">
+                <h3>Today's conditions</h3>
+
+                <div class="form-group">
+                    <label>Weather</label>
+                    <select id="weatherPageSelect" onchange="updateWeather()">
+                        <option value="warm">Sunny / Warm</option>
+                        <option value="cold">Cold</option>
+                        <option value="rainy">Rainy</option>
+                        <option value="mild">Mild</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="weatherOutfit()">Suggest an outfit</button>
+                <div id="weatherSuggestion"></div>
+            </div>
+        </section>
+
+        <!-- FAVORITES -->
+        <section class="section" id="favorites">
+
+            <h1 class="heading">Your Favorites</h1>
+            <p class="subheading">Pieces you love the most.</p>
+
+            <div class="closet-grid" id="favoritesGrid"></div>
+        </section>
+
+        <!-- WEAR TRACKER -->
+        <section class="section" id="tracker">
+
+            <h1 class="heading">Wear Tracker</h1>
+            <p class="subheading">Rediscover your wardrobe and make every piece count.</p>
+
+            <div class="panel">
+                <h3>Closet utilization</h3>
+                <p id="utilizationText"></p>
+
+                <div class="progress-track">
+                    <div id="utilizationBar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Most worn</h3>
+                <div id="mostWorn"></div>
+            </div>
+
+            <div class="panel">
+                <h3>Forgotten pieces</h3>
+                <p class="muted-text">Give these pieces another chance.</p>
+                <div id="forgotten"></div>
+            </div>
+        </section>
+
+        <!-- PLANNER -->
+        <section class="section" id="planner">
+
+            <h1 class="heading">Weekly Planner</h1>
+            <p class="subheading">Plan outfits ahead and make mornings easier.</p>
+
+            <div class="panel">
+                <h3>Save this week's looks</h3>
+                <p class="muted-text">Generate an outfit in Outfit Studio and save it to a day.</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Select day</label>
+                        <select id="plannerDay">
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                            <option>Wednesday</option>
+                            <option>Thursday</option>
+                            <option>Friday</option>
+                            <option>Saturday</option>
+                            <option>Sunday</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="saveToPlanner()">Save current outfit</button>
+            </div>
+
+            <div class="planner-grid" id="plannerGrid"></div>
+        </section>
+
+        <!-- LAUNDRY -->
+        <section class="section" id="laundry">
+
+            <h1 class="heading">Laundry Room</h1>
+            <p class="subheading">Keep track of the pieces that need a wash.</p>
+
+            <div class="panel">
+                <h3>Ready to wear again</h3>
+                <div id="laundryGrid"></div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ADD ITEM MODAL -->
+<div class="modal" id="addModal">
+    <div class="modal-content">
+        <button class="close" onclick="closeModal()">×</button>
+        <h2>Add to your closet</h2>
+
+        <div class="form-group">
+            <label>Item name</label>
+            <input id="itemName" placeholder="e.g. Olive Oversized Shirt">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Category</label>
+                <select id="itemCategory">
+                    <option>Top</option>
+                    <option>Bottom</option>
+                    <option>Outerwear</option>
+                    <option>Footwear</option>
+                    <option>Accessory</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Color</label>
+                <input id="itemColor" placeholder="e.g. Olive">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Price (₹)</label>
+                <input id="itemPrice" type="number" placeholder="1200">
+            </div>
+
+            <div class="form-group">
+                <label>Image URL</label>
+                <input id="itemImage" placeholder="Paste image URL">
+            </div>
+        </div>
+
+        <button class="btn" onclick="addItem()">Save Item</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
